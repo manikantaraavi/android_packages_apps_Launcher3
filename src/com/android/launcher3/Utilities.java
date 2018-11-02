@@ -101,6 +101,8 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.android.internal.util.aicp.PackageUtils;
+
 /**
  * Various utilities shared amongst the Launcher's classes.
  */
@@ -140,6 +142,7 @@ public final class Utilities {
     public static final String KEY_DT_GESTURE = "pref_dt_gesture";
 
     private static final long WAIT_BEFORE_RESTART = 250;
+    static final String KEY_SHOW_SEARCHBAR = "pref_show_searchbar";
 
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
@@ -170,6 +173,7 @@ public final class Utilities {
     // An intent extra to indicate the launch source by launcher.
     public static final String EXTRA_WALLPAPER_LAUNCH_SOURCE =
             "com.android.wallpaper.LAUNCH_SOURCE";
+    public static final String SEARCH_PACKAGE = "com.google.android.googlequicksearchbox";
 
     public static boolean IS_RUNNING_IN_TEST_HARNESS =
                     ActivityManager.isRunningInTestHarness();
@@ -893,4 +897,12 @@ public final class Utilities {
             android.os.Process.killProcess(android.os.Process.myPid());
         });
     }
+    public static boolean showQSB(Context context) {
+        SharedPreferences prefs = getPrefs(context.getApplicationContext());
+        if (!PackageUtils.isPackageInstalled(context, SEARCH_PACKAGE)) {
+            return false;
+        }
+        return prefs.getBoolean(KEY_SHOW_SEARCHBAR, true);
+    }
+
 }
