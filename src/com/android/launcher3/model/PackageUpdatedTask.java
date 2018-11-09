@@ -50,6 +50,7 @@ import com.android.launcher3.util.ItemInfoMatcher;
 import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.util.SafeCloseable;
+import com.android.launcher3.Utilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -105,6 +106,9 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
             case OP_ADD: {
                 for (int i = 0; i < N; i++) {
                     if (DEBUG) Log.d(TAG, "mAllAppsList.addPackage " + packages[i]);
+                    if (isSearchPackage(packages[i])) {
+                        app.setSearchAppAvailable(true);
+                    }
                     iconCache.updateIconsForPkg(packages[i], mUser);
                     if (FeatureFlags.PROMISE_APPS_IN_ALL_APPS.get()) {
                         appsList.removePackage(packages[i], mUser);
@@ -159,6 +163,11 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                         FlagOp.removeFlag(WorkspaceItemInfo.FLAG_DISABLED_SUSPENDED);
                 if (DEBUG) Log.d(TAG, "mAllAppsList.(un)suspend " + N);
                 appsList.updateDisabledFlags(matcher, flagOp);
+                for (int i = 0; i < N; i++) {
+                    if (isSearchPackage(packages[i])) {
+                        app.setSearchAppAvailable(mOp == OP_SUSPEND ? false : true);
+                    }
+                }
                 break;
             case OP_USER_AVAILABILITY_CHANGE: {
                 UserManagerState ums = new UserManagerState();
@@ -379,5 +388,9 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
             return true;
         }
         return false;
+    }
+
+    private boolean isSearchPackage(String packageName) {
+        return packageName.equals(Utilities.SEARCH_PACKAGE);
     }
 }
