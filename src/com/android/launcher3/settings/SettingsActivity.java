@@ -38,7 +38,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.DropDownPreference;
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceFragmentCompat;
@@ -58,6 +57,8 @@ import com.android.launcher3.model.WidgetsModel;
 import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
+
+import com.android.launcher3.settings.preferences.CustomSeekBarPreference;
 
 import java.util.Collections;
 import java.util.List;
@@ -287,13 +288,10 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
                     updateIsGoogleAppEnabled();
                     return true;
                 case Utilities.ICON_SIZE:
-                    final DropDownPreference iconSizes = (DropDownPreference) findPreference(Utilities.ICON_SIZE);
-                    iconSizes.setSummary(iconSizes.getEntry());
+                    final CustomSeekBarPreference iconSizes = (CustomSeekBarPreference) findPreference(Utilities.ICON_SIZE);
                     iconSizes.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
                     public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int index = iconSizes.findIndexOfValue((String) newValue);
-                    iconSizes.setSummary(iconSizes.getEntries()[index]);
-                    Utilities.restart(getActivity());
+                    LauncherAppState.getInstanceNoCreate().setNeedsRestart();
                     return true;
                     }
                 });
