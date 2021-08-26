@@ -61,6 +61,8 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.app.ActivityManager.MemoryInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
 import android.content.LocusId;
@@ -78,6 +80,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.UserHandle;
+import android.provider.Settings;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -100,6 +103,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.OverScroller;
+import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
@@ -559,6 +564,10 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
     private int mTaskViewStartIndex = 0;
     private OverviewActionsView mActionsView;
 
+    TextView mMemText;
+    private ActivityManager mAm;
+    private int mTotalMem;
+
     private MultiWindowModeChangedListener mMultiWindowModeChangedListener =
             new MultiWindowModeChangedListener() {
                 @Override
@@ -625,6 +634,7 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
 
         // Initialize quickstep specific cache params here, as this is constructed only once
         mActivity.getViewCache().setCacheSize(R.layout.digital_wellbeing_toast, 5);
+        mAm = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 
         mLiveTileTaskViewSimulator = new TaskViewSimulator(getContext(), getSizeStrategy(),
                 true /* isForLiveTile */);
@@ -768,6 +778,7 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         mSplitPlaceholderView = splitPlaceholderView;
         mClearAllButton = (Button) mActionsView.findViewById(R.id.clear_all);
         mClearAllButton.setOnClickListener(this::dismissAllTasks);
+        mMemText = (TextView) mActionsView.findViewById(R.id.recents_memory_text);
     }
 
     public SplitPlaceholderView getSplitPlaceholder() {
@@ -2770,6 +2781,28 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         updatePageOffsets();
         setImportantForAccessibility(isModal() ? IMPORTANT_FOR_ACCESSIBILITY_NO
                 : IMPORTANT_FOR_ACCESSIBILITY_AUTO);
+        showMemDisplay();
+    }
+
+     private boolean showMemDisplay() {
+        if (!Utilities.recentsShowMemory(getContext())) {
+            mMemText.setVisibility(View.GONE);
+            return false;
+        }
+        mMemText.setVisibility(View.VISIBLE);
+
+        updateMemoryStatus();
+        return true;
+    }
+
+    private void updateMemoryStatus() {
+        if (mMemText.getVisibility() == View.GONE) return;
+
+        MemoryInfo memInfo = new MemoryInfo();
+        mAm.getMemoryInfo(memInfo);
+        int available = (int)(memInfo.availMem / 1048576L);
+        int max = (int)(memInfo.totalMem / 1048576L);
+        mMemText.setText("Free RAM: " + String.valueOf(available) + "MB");
     }
 
     private void updatePageOffsets() {
