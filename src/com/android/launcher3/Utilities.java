@@ -138,9 +138,9 @@ public final class Utilities {
     public static final int EDGE_NAV_BAR = 1 << 8;
 
     public static final String KEY_DT_GESTURE = "pref_dt_gesture";
+    public static final String KEY_SHOW_SEARCHBAR = "pref_show_searchbar";
 
     private static final long WAIT_BEFORE_RESTART = 250;
-    static final String KEY_SHOW_SEARCHBAR = "pref_show_searchbar";
 
     /**
      * Indicates if the device has a debug build. Should only be used to store additional info or
@@ -900,7 +900,7 @@ public final class Utilities {
         if (!LauncherAppState.getInstanceNoCreate().isSearchAppAvailable()) {
             return false;
         }
-        return prefs.getBoolean(KEY_SHOW_SEARCHBAR, true);
+        return prefs.getBoolean(KEY_SHOW_SEARCHBAR, false);
     }
 
 }
