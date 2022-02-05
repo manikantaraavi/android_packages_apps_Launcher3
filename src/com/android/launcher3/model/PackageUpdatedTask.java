@@ -33,6 +33,7 @@ import com.android.launcher3.Launcher;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherSettings;
 import com.android.launcher3.LauncherSettings.Favorites;
+import com.android.launcher3.Utilities;
 import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.icons.BitmapInfo;
 import com.android.launcher3.icons.IconCache;
@@ -101,6 +102,7 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                 : ItemInfoMatcher.ofPackages(packageSet, mUser);
         final HashSet<ComponentName> removedComponents = new HashSet<>();
         final HashMap<String, List<LauncherActivityInfo>> activitiesLists = new HashMap<>();
+        boolean needsRestart = false;
 
         switch (mOp) {
             case OP_ADD: {
@@ -108,6 +110,9 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                     if (DEBUG) Log.d(TAG, "mAllAppsList.addPackage " + packages[i]);
                     if (isSearchPackage(packages[i])) {
                         app.setSearchAppAvailable(true);
+                    }
+                    if (isTargetPackage(packages[i])) {
+                        needsRestart = true;
                     }
                     iconCache.updateIconsForPkg(packages[i], mUser);
                     if (FeatureFlags.PROMISE_APPS_IN_ALL_APPS.get()) {
@@ -145,6 +150,9 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                 for (int i = 0; i < N; i++) {
                     FileLog.d(TAG, "Removing app icon" + packages[i]);
                     iconCache.removeIconsForPkg(packages[i], mUser);
+                    if (isTargetPackage(packages[i])) {
+                        needsRestart = true;
+                    }
                 }
                 // Fall through
             }
@@ -166,6 +174,9 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
                 for (int i = 0; i < N; i++) {
                     if (isSearchPackage(packages[i])) {
                         app.setSearchAppAvailable(mOp == OP_SUSPEND ? false : true);
+                    }
+                    if (isTargetPackage(packages[i])) {
+                        needsRestart = true;
                     }
                 }
                 break;
@@ -367,6 +378,10 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
             }
             bindUpdatedWidgets(dataModel);
         }
+
+        if (needsRestart) {
+            Utilities.restart(context);
+        }
     }
 
     /**
@@ -392,5 +407,9 @@ public class PackageUpdatedTask extends BaseModelUpdateTask {
 
     private boolean isSearchPackage(String packageName) {
         return packageName.equals(Utilities.SEARCH_PACKAGE);
+    }
+    
+    private boolean isTargetPackage(String packageName) {
+        return packageName.equals("com.google.ar.lens") || packageName.equals("com.google.android.googlequicksearchbox");
     }
 }
