@@ -150,7 +150,9 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
                 LauncherAppState.getInstanceNoCreate().setNeedsRestart();
         } else if (Utilities.KEY_DOCK_SEARCH.equals(key)) {
                 LauncherAppState.getInstanceNoCreate().setNeedsRestart();
-        }
+        } else if (Utilities.KEY_DOCK_THEME.equals(key)) {
+                LauncherAppState.getInstanceNoCreate().setNeedsRestart();
+        } 
     }
 
     private boolean startPreference(String fragment, Bundle args, String key) {
