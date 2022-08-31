@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/conListItem" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <com.google.android.material.card.MaterialCardView android:layout_width="match_parent" android:layout_height="60dp" android:outlineSpotShadowColor="@android:color/transparent" android:outlineAmbientShadowColor="@android:color/transparent" app:cardCornerRadius="10dp" app:cardUseCompatPadding="false" app:contentPadding="5dp" style="@style/Widget.Material3.CardView.Elevated">
+        <com.google.android.material.imageview.ShapeableImageView android:id="@+id/contributorAvatar" android:layout_width="40dp" android:layout_height="40dp" android:layout_marginTop="5dp" android:src="@color/launcher_icon_background" android:scaleType="centerCrop" android:layout_marginStart="5dp" app:shapeAppearanceOverlay="@style/roundedImageView"/>
+        <TextView android:id="@+id/contributorName" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="55dp" android:layout_marginTop="5dp" android:text="Contributor name" android:fontFamily="@font/product_sans_bold"/>
+        <TextView android:id="@+id/contributorRole" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="55dp" android:layout_marginTop="25dp" android:text="Icon artist" android:alpha="0.8" android:fontFamily="@font/cairo"/>
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>

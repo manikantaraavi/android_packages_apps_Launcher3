@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="app_icon_bg_color">@color/launcher_icon</color>
+    <color name="app_icon_color">@android:color/white</color>
+    <color name="navbar_bg_color">?attr/colorOnSecondary</color>
+    <color name="reqBtnBg">@color/cardview_dark_background</color>
+</resources>

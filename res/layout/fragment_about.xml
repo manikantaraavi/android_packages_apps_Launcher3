@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/fragment_about" android:background="?attr/colorSurface" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.google.android.material.appbar.AppBarLayout android:id="@+id/about_appBar" android:paddingTop="15dp" android:paddingBottom="15dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginStart="30dp" android:layout_marginEnd="30dp">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView android:textSize="@dimen/appbar_text_size" android:id="@+id/about_toolbarTxt1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/about_title" android:layout_centerHorizontal="true" android:fontFamily="@font/product_sans_bold"/>
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.cardview.widget.CardView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="30dp" android:layout_marginRight="30dp" android:layout_marginBottom="5dp" android:layout_below="@+id/about_appBar" android:outlineSpotShadowColor="@android:color/transparent" android:outlineAmbientShadowColor="@android:color/transparent" app:cardBackgroundColor="@android:color/transparent" app:cardCornerRadius="30dp" style="@style/Widget.Material3.CardView.Filled">
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/conRecView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:nestedScrollingEnabled="false"/>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

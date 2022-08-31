@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:id="@+id/allIconsListItem" android:padding="5dp" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <com.google.android.material.card.MaterialCardView android:layout_width="85dp" android:layout_height="105dp" android:outlineSpotShadowColor="@android:color/transparent" android:outlineAmbientShadowColor="@android:color/transparent" app:cardCornerRadius="10dp" app:cardUseCompatPadding="false" app:contentPadding="5dp" style="@style/Widget.Material3.CardView.Elevated">
+        <RelativeLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <RelativeLayout android:id="@+id/iconHolder" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <com.google.android.material.imageview.ShapeableImageView android:id="@+id/appIconBG" android:layout_width="75dp" android:layout_height="75dp" android:src="@color/app_icon_bg_color" app:shapeAppearance="@style/roundedImageView"/>
+                <ImageView android:id="@+id/appIcon" android:layout_width="50dp" android:layout_height="50dp" android:src="@color/launcher_icon" android:scaleType="centerCrop" android:layout_centerInParent="true"/>
+            </RelativeLayout>
+            <TextView android:textSize="12sp" android:ellipsize="end" android:id="@+id/appName" android:paddingTop="3dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="App name" android:singleLine="true" android:layout_below="@+id/iconHolder" android:fontFamily="@font/cairo" android:textAlignment="center"/>
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>
